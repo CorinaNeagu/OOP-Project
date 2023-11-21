@@ -7,22 +7,22 @@ using namespace std;
 
 class Event {
 	const int eventCounter;
-	char* nameEvent; //dynamic array of
+	char* nameEvent; //dynamic array of characters
 	int duration;
-	int seats; //static array of numbers
-	int* noSeatsAvailable;
+	int* seats; //sits available for purchase
+	int noSeats; //static array of numbers
 	bool isSoldOut;
 
 	static int NO_EVENTS;
-	static int MAX_NO_SEATS;
+	//static int MAX_NO_SEATS;
 
 public:
 	//default constructor
 	Event() :eventCounter(++NO_EVENTS) {
 		this->nameEvent = nullptr;
 		this->duration = 0;
-		this->seats = 0;
-		this->noSeatsAvailable = nullptr;
+		this->noSeats = 0;
+		this->seats = nullptr;
 		this->isSoldOut = false;
 
 	}
@@ -34,35 +34,35 @@ public:
 		strcpy_s(this->nameEvent, strlen(name) + 1, name);
 
 		this->duration = duration; //not shadowing
-		this->seats = 100;
-		this->noSeatsAvailable = nullptr;
+		this->noSeats = 100;
+		this->seats = nullptr;
 		this->isSoldOut = false;
 
 
 	}
 
-	Event(const char* name, int duration, int* noSeatsAvailable, int seats, bool isSoldOut) : eventCounter(++NO_EVENTS) {
+	Event(const char* name, int duration, int* seats, int noSeats, bool isSoldOut) : eventCounter(++NO_EVENTS) {
 
 		this->nameEvent = new char[strlen(name) + 1];
 		strcpy_s(this->nameEvent, strlen(name) + 1, name);
 
 
 		this->duration = duration; //not shadowing
-		this->seats = seats;
+		this->noSeats = noSeats;
 		this->isSoldOut = isSoldOut;
 
-		if (noSeatsAvailable != nullptr) {
-			this->noSeatsAvailable = new int[seats];
-			for (int i = 0; i < seats; i++) {
-				this->noSeatsAvailable[i] = noSeatsAvailable[i];
+		if (seats != nullptr) {
+			this->seats = new int[noSeats];
+			for (int i = 0; i < noSeats; i++) {
+				this->seats[i] = seats[i];
 			}
 		}
 		else {
-			this->noSeatsAvailable = nullptr;
+			this->seats = nullptr;
 		}
 	}
 
-	char* getNameEvent() {
+	char* getNameEvent() const {
 		char* copyName = new char[strlen(this->nameEvent) + 1];
 		strcpy(copyName, this->nameEvent);
 		return copyName;
@@ -77,39 +77,34 @@ public:
 		strcpy_s(this->nameEvent, strlen(nameEvent) + 1, nameEvent);
 	}
 
-	int* getNoOfSeatsAvailable() {
-		int* copySeats;
-		if (this->noSeatsAvailable != nullptr) {
-			copySeats = new int[this->seats];
-			for (int i = 0; i < this->seats; i++) {
-				copySeats[i] = this->noSeatsAvailable[i];
-			}
-		}
-		else {
-			copySeats = nullptr;
+
+	int* getSeats() {
+		int* copySeats = new int[this->noSeats];
+		for (int i = 0; i < this->noSeats; i++) {
+			copySeats[i] = this->seats[i];
 		}
 		return copySeats;
 	}
 
-	void setNoOfSeatsAvailable(int* seatsAvailable) {
-		if (this->noSeatsAvailable != nullptr) {
-			delete[] this->noSeatsAvailable;
-			this->noSeatsAvailable = nullptr;
+	void setSeats(int* seatsAvailable) {
+		if (this->seats != nullptr) {
+			delete[] this->seats;
+			this->seats = nullptr;
 		}
 		if (seatsAvailable != nullptr) {
-			this->noSeatsAvailable = new int[this->seats];
-			for (int i = 0; i < this->seats; i++) {
-				this->noSeatsAvailable[i] = seatsAvailable[i];
+			this->seats = new int[this->noSeats];
+			for (int i = 0; i < this->noSeats; i++) {
+				this->seats[i] = seatsAvailable[i];
 			}
 		}
 		else
 		{
-			this->noSeatsAvailable = nullptr;
+			this->seats = nullptr;
 		}
 	}
 
 
-	int getDuration() {
+	int getDuration() const {
 		return this->duration;
 	}
 
@@ -122,20 +117,20 @@ public:
 		}
 	}
 
-	int getSeats() {
-		return this->seats;
+	int getNoOfSeats() const {
+		return this->noSeats;
 	}
 
-	void setSeats(int noSeats) {
-		if (noSeats < Event::MAX_NO_SEATS) {
-			this->seats = noSeats;
+	void setNoOfSeats(int noSeats) {
+		if (noSeats > 1) {
+			this->noSeats = noSeats; //not shadowing
 		}
 		else {
-			throw exception("No more seats available.");
+			throw exception("Invalid input regarding the number of seats.");
 		}
 	}
 
-	bool getIsSoldOut() {
+	bool getIsSoldOut() const {
 		return this->isSoldOut;
 	}
 
@@ -150,17 +145,18 @@ public:
 		cout << endl << "Calling the copy constructor.";
 
 		this->duration = e.duration;
-		this->seats = e.seats;
 		this->isSoldOut = e.isSoldOut;
 
 
 		this->nameEvent = new char[strlen(e.nameEvent) + 1];
 		strcpy_s(this->nameEvent, strlen(e.nameEvent) + 1, e.nameEvent);
 
-		this->noSeatsAvailable = new int[this->seats];
-		for (int i = 0; i < this->seats; i++) {
-			this->noSeatsAvailable[i] = e.noSeatsAvailable[i];
+		this->seats = new int[this->noSeats];
+		for (int i = 0; i < this->noSeats; i++) {
+			this->seats[i] = e.seats[i];
 		}
+
+		this->noSeats = e.noSeats;
 
 	}
 
@@ -172,13 +168,13 @@ public:
 			this->nameEvent = nullptr;
 		}
 
-		if (this->noSeatsAvailable != nullptr) {
-			delete[] this->noSeatsAvailable;
-			this->noSeatsAvailable = nullptr;
+		if (this->seats != nullptr) {
+			delete[] this->seats;
+			this->seats = nullptr;
 		}
 	}
 
-
+	//to check later
 	Event& operator=(const Event& event) {
 		if (event.nameEvent != nullptr) {
 			if (this->nameEvent != nullptr) {
@@ -192,17 +188,28 @@ public:
 			this->nameEvent = nullptr;
 		}
 
+		if (this->seats == event.seats) {
+			return; //error - return what?
+		}
+		else {
+			delete[] this->seats;
+			this->seats = new int[this->noSeats];
+			for (int i = 0; i < this->noSeats; i++) {
+				this->seats[i] = event.seats[i];
+			}
+		}
+
 
 		this->isSoldOut = event.isSoldOut;
 		this->duration = event.duration;
-		this->seats = event.seats;
-		this->noSeatsAvailable = event.noSeatsAvailable;
+		this->noSeats = event.noSeats;
 		return *this;
 	}
 
 
-	friend ostream& operator<<(ostream& console, const Event& event);
 
+	friend ostream& operator<<(ostream& console, const Event& event);
+	friend void operator>>(istream& in, Event& event);
 };
 
 
@@ -211,8 +218,19 @@ ostream& operator<<(ostream& console, const Event& event) {
 	console << endl << "Event " << event.nameEvent << " will last for " <<
 		event.duration << " minutes.";
 	console << endl << "The tickets are sold out. " << event.isSoldOut;
+	cout << endl << "There are " << event.noSeats << " available, out of which only " << event.seats << " are still available for purchase.";
 	return console;
 }
 
-int Event::NO_EVENTS = 0;
-int Event::MAX_NO_SEATS = 100;
+void operator>>(istream& in, Event& event) {
+	cout << endl << "The name of the event is: ";
+	char buffer[100];
+	in >> buffer;
+	if (event.nameEvent != nullptr) {
+		delete[] event.nameEvent;
+		event.nameEvent = nullptr;
+	}
+	event.nameEvent = new char[strlen(buffer) + 1];
+	strcpy_s(event.nameEvent, strlen(buffer) + 1, buffer);
+
+}
