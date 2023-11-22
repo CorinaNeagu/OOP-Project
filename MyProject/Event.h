@@ -206,7 +206,11 @@ public:
 		return *this;
 	}
 
-
+	Event& operator+(int addDuration) {
+		Event copyEvent = *this;
+		copyEvent.duration += addDuration; 
+		return copyEvent;
+	}
 
 	friend ostream& operator<<(ostream& console, const Event& event);
 	friend void operator>>(istream& in, Event& event);
