@@ -6,13 +6,14 @@ using namespace std;
 
 
 class Event {
+private:
 	const int eventCounter;
 	char* nameEvent; //dynamic array of characters
 	int duration;
 	int* seats; //sits available for purchase
-	int noSeats; //static array of numbers
+	int noSeats; //static array of numbers 
 	bool isSoldOut;
-
+public:
 	static int NO_EVENTS;
 	//static int MAX_NO_SEATS;
 
@@ -30,8 +31,13 @@ public:
 	//2 constructors with parameters
 	Event(const char* name, int duration) : eventCounter(++NO_EVENTS) {
 
-		this->nameEvent = new char[strlen(name) + 1];
-		strcpy_s(this->nameEvent, strlen(name) + 1, name);
+		if (name == nullptr) {
+			throw exception ("Invalid");
+		}
+		else {
+			this->nameEvent = new char[strlen(name) + 1];
+			strcpy_s(this->nameEvent, strlen(name) + 1, name);
+		}
 
 		this->duration = duration; //not shadowing
 		this->noSeats = 100;
@@ -42,9 +48,13 @@ public:
 	}
 
 	Event(const char* name, int duration, int* seats, int noSeats, bool isSoldOut) : eventCounter(++NO_EVENTS) {
-
-		this->nameEvent = new char[strlen(name) + 1];
-		strcpy_s(this->nameEvent, strlen(name) + 1, name);
+		if (name == nullptr) {
+			throw exception("Invalid");
+		}
+		else {
+			this->nameEvent = new char[strlen(name) + 1];
+			strcpy_s(this->nameEvent, strlen(name) + 1, name);
+		}
 
 
 		this->duration = duration; //not shadowing
@@ -189,7 +199,7 @@ public:
 		}
 
 		if (this->seats == event.seats) {
-			return; //error - return what?
+			return;
 		}
 		else {
 			delete[] this->seats;
@@ -198,7 +208,6 @@ public:
 				this->seats[i] = event.seats[i];
 			}
 		}
-
 
 		this->isSoldOut = event.isSoldOut;
 		this->duration = event.duration;
@@ -212,9 +221,38 @@ public:
 		return copyEvent;
 	}
 
+	//operator+ inside the class
+	Event& operator+(int value) {
+		Event copy = *this;
+		copy.noSeats += value;
+		return copy;
+	}
+
+	//operator++ inside the class POST INCREMENTATION
+	Event& operator++(int) {
+		Event copy = *this;
+		this->noSeats++;
+		return copy;
+	}
+
 	friend ostream& operator<<(ostream& console, const Event& event);
-	friend void operator>>(istream& in, Event& event);
+	friend istream& operator>>(istream& in, Event& event);
+	friend Event operator+(int value, const Event& event);
+	friend Event operator++(Event& event);
 };
+
+//operator+ outside the class using a friend method
+Event operator+(int value, const Event& event) {
+	Event copy = event;
+	copy.noSeats += value;
+	return copy;
+}
+
+//operator++ outside the class using a friend method PRE INCREMENTATION
+Event operator++(Event& event) {
+	event.noSeats++;
+	return event;
+}
 
 
 ostream& operator<<(ostream& console, const Event& event) {
@@ -226,15 +264,19 @@ ostream& operator<<(ostream& console, const Event& event) {
 	return console;
 }
 
-void operator>>(istream& in, Event& event) {
+istream& operator>>(istream& in, Event& event) {
 	cout << endl << "The name of the event is: ";
 	char buffer[100];
-	in >> buffer;
-	if (event.nameEvent != nullptr) {
-		delete[] event.nameEvent;
-		event.nameEvent = nullptr;
-	}
-	event.nameEvent = new char[strlen(buffer) + 1];
-	strcpy_s(event.nameEvent, strlen(buffer) + 1, buffer);
+	in.getline(buffer, 100);
+	in.clear();
+	event.setNameEvent(buffer);
+
+	cout << "The duration in minutes of the event is: ";
+	in >> event.duration;
+
+	cout << "The number of available seats is: ";
+	in >> event.noSeats;
+
+	return in;
 
 }
