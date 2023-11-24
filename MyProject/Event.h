@@ -38,10 +38,10 @@ public:
 			this->nameEvent = new char[strlen(name) + 1];
 			strcpy_s(this->nameEvent, strlen(name) + 1, name);
 		}
-
-		this->duration = duration; //not shadowing
-		this->noSeats = 100;
+		
 		this->seats = nullptr;
+		this->duration = duration; //not shadowing
+		this->noSeats = 0;
 		this->isSoldOut = false;
 
 
@@ -73,38 +73,53 @@ public:
 	}
 
 	char* getNameEvent() const {
-		char* copyName = new char[strlen(this->nameEvent) + 1];
-		strcpy(copyName, this->nameEvent);
-		return copyName;
-	}
+		if (this->nameEvent != nullptr) {
+			char* copyName = new char[strlen(this->nameEvent) + 1];
+			strcpy_s(copyName, strlen(this->nameEvent) + 1, this->nameEvent);
+			return copyName;
+		}
+		else {
+			return nullptr; 
+		}
+	} 
 
 	void setNameEvent(const char* nameEvent) {
-		if (this->nameEvent != nullptr) {
-			delete[] this->nameEvent;
-			this->nameEvent = nullptr;
+		if (nameEvent == nullptr) {
+			throw exception("No input.");
 		}
-		this->nameEvent = new char[strlen(nameEvent) + 1];
-		strcpy_s(this->nameEvent, strlen(nameEvent) + 1, nameEvent);
+		else {
+			if (this->nameEvent != nullptr) {
+				delete[] this->nameEvent;
+				this->nameEvent = nullptr;
+			}
+			this->nameEvent = new char[strlen(nameEvent) + 1];
+			strcpy_s(this->nameEvent, strlen(nameEvent) + 1, nameEvent);
+		}
 	}
 
 
 	int* getSeats() {
-		int* copySeats = new int[this->noSeats];
-		for (int i = 0; i < this->noSeats; i++) {
-			copySeats[i] = this->seats[i];
+		if (this->seats != nullptr) {
+			int* copySeats = new int[this->noSeats];
+			for (int i = 0; i < this->noSeats; i++) {
+				copySeats[i] = this->seats[i];
+			}
+			return copySeats;
 		}
-		return copySeats;
+		else {
+			return nullptr;
+		}
 	}
 
-	void setSeats(int* seatsAvailable) {
+	void setSeats(int* seats) {
 		if (this->seats != nullptr) {
 			delete[] this->seats;
 			this->seats = nullptr;
 		}
-		if (seatsAvailable != nullptr) {
+		if (seats != nullptr) {
 			this->seats = new int[this->noSeats];
 			for (int i = 0; i < this->noSeats; i++) {
-				this->seats[i] = seatsAvailable[i];
+				this->seats[i] = seats[i];
 			}
 		}
 		else
@@ -152,7 +167,7 @@ public:
 	//copy constructor 
 	Event(const Event& e) : eventCounter(++NO_EVENTS) {
 
-		cout << endl << "Calling the copy constructor.";
+		//cout << endl << "Calling the copy constructor.";
 
 		this->duration = e.duration;
 		this->isSoldOut = e.isSoldOut;
@@ -172,7 +187,7 @@ public:
 
 	//destructor 
 	~Event() {
-		cout << endl << "Calling the destructor";
+		//cout << endl << "Calling the destructor";
 		if (this->nameEvent != nullptr) {
 			delete[] this->nameEvent;
 			this->nameEvent = nullptr;
@@ -185,7 +200,7 @@ public:
 	}
 
 	//to check later
-	Event& operator=(const Event& event) {
+	Event& operator=(const Event& event) { //for initialising an object with a value
 		if (event.nameEvent != nullptr) {
 			if (this->nameEvent != nullptr) {
 				delete[] this->nameEvent;
@@ -198,11 +213,18 @@ public:
 			this->nameEvent = nullptr;
 		}
 
-		if (this->seats == event.seats) {
-			return;
+		if (this->noSeats == event.noSeats) {
+			for (int i = 0; i < this->noSeats; i++) { 
+				this->seats[i] = event.seats[i];
+			}
+			return *this;
 		}
-		else {
-			delete[] this->seats;
+		else { 
+			if (this->seats != nullptr) {
+				delete[] this->seats;
+				this->seats = nullptr;
+			}
+			this->noSeats = event.noSeats;
 			this->seats = new int[this->noSeats];
 			for (int i = 0; i < this->noSeats; i++) {
 				this->seats[i] = event.seats[i];
@@ -211,47 +233,89 @@ public:
 
 		this->isSoldOut = event.isSoldOut;
 		this->duration = event.duration;
-		this->noSeats = event.noSeats;
 		return *this;
 	}
 
+	//operator+ inside the class
 	Event& operator+(int addDuration) {
 		Event copyEvent = *this;
 		copyEvent.duration += addDuration; 
 		return copyEvent;
 	}
 
-	//operator+ inside the class
-	Event& operator+(int value) {
-		Event copy = *this;
-		copy.noSeats += value;
-		return copy;
-	}
-
-	//operator++ inside the class POST INCREMENTATION
+	//operator++ inside the class - POST INCREMENTATION
 	Event& operator++(int) {
 		Event copy = *this;
-		this->noSeats++;
+		this->duration++;
 		return copy;
 	}
 
+	//generic method no 1
+	void printNoSeats() const {
+		if (this->seats == nullptr) {
+			cout << endl << "No seats.";
+		}
+		else {
+			cout << endl << "Available seats: ";
+			for (int i = 0; i < this->noSeats; i++) {
+				cout << this->seats[i] << " ";
+			}
+		}
+	}
+	//generic method no 2
+
+	//indexing operator
+	char operator[](int index) {
+		if (index >= 0 && index < strlen(this->nameEvent)) {
+			return this->nameEvent[index];
+		}
+		else {
+			throw exception("Index out of range.");
+		}
+	}
+
+	
+	//cast operator - explicit form 
+	explicit operator char() {
+		return this->duration;
+	}
+
+
+	//the negation operator !
+	bool operator!() {
+		bool copy = !this->isSoldOut;
+		return copy;
+	}
+
+	//conditional operator
+
+	//equality operator ==
+	bool operator==(const Event& e) {
+		if (this->duration == e.duration && this->noSeats == e.noSeats && this->isSoldOut == e.isSoldOut && strcmp(this->nameEvent, e.nameEvent) == 0)
+			return true;
+		else
+			return false;
+	}
+
+
+	//friend zone
 	friend ostream& operator<<(ostream& console, const Event& event);
 	friend istream& operator>>(istream& in, Event& event);
-	friend Event operator+(int value, const Event& event);
-	friend Event operator++(Event& event);
+	friend Event operator+(int value, const Event& e);
+	friend Event operator++(Event& e);
 };
 
 //operator+ outside the class using a friend method
-Event operator+(int value, const Event& event) {
-	Event copy = event;
-	copy.noSeats += value;
+Event operator+(int value, const Event& e) {
+	Event copy = e;
+	copy.duration += value;
 	return copy;
 }
 
 //operator++ outside the class using a friend method PRE INCREMENTATION
-Event operator++(Event& event) {
-	event.noSeats++;
-	return event;
+Event operator++(Event& e) {
+	e.duration++;
+	return e;
 }
 
 
@@ -260,14 +324,15 @@ ostream& operator<<(ostream& console, const Event& event) {
 	console << endl << "Event " << event.nameEvent << " will last for " <<
 		event.duration << " minutes.";
 	console << endl << "The tickets are sold out. " << event.isSoldOut;
-	cout << endl << "There are " << event.noSeats << " available, out of which only " << event.seats << " are still available for purchase.";
+	cout << endl << "There are " << event.noSeats << " available.";
+	event.printNoSeats();
 	return console;
 }
 
 istream& operator>>(istream& in, Event& event) {
 	cout << endl << "The name of the event is: ";
-	char buffer[100];
-	in.getline(buffer, 100);
+	char buffer[100]; 
+	in.getline(buffer, 100); //reading with spaces
 	in.clear();
 	event.setNameEvent(buffer);
 
@@ -280,3 +345,5 @@ istream& operator>>(istream& in, Event& event) {
 	return in;
 
 }
+
+int Event::NO_EVENTS = 0;
