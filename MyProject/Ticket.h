@@ -148,9 +148,82 @@ public:
 		return *this;
 	}
 
+	//operator + inside the class - smt wrong here
+	Ticket& operator+(int addPrice) {
+		Ticket copyTicket = *this;
+		copyTicket.price += addPrice;
+		return copyTicket;
+	}
+
+	//operator ++ inside the class POST INCREMENTATION - doesn't work
+	Ticket& operator++(int) {
+		Ticket copy = *this;
+		this->price++;
+		return copy;
+	}
+
+	//indexing operator
+	char operator[](int index) {
+		if (index >= 0 && index < strlen(this->nameShow)) {
+			return this->nameShow[index];
+		}
+		else {
+			throw exception("Index out of range.");
+		}
+	}
+
+	//negation operator
+	bool operator!() {
+		bool copy = !this->isVIP;
+		return copy;
+	}
+
+	//conditional operator
+
+	//equality operator ==
+	bool operator==(const Ticket& t) {
+		if (this->price == t.price && this->isVIP == t.isVIP && strcmp(this->nameShow, nameShow) == 0 && this->text == t.text)
+			return true;
+		else
+			return false;
+	}
+
+	//generic method no 1 - displaying ticket information
+	void printInfo() {
+		cout << endl << "------------------------";
+		if (this->nameShow != nullptr) {
+			cout << endl << "This ticket is for: " << this->nameShow;
+		}
+		else {
+			cout << endl << "Invalid name.";
+		}
+		cout << endl << "Description: " << this->text;
+		cout << endl << "The price of this ticket is: " << this->price;
+		cout << endl << "Is this ticket a VIP one? " << (this->isVIP ? "Yes." : "No.");
+	}
+
+	//generic method no 2 - 
+
+
+	//friends
 	friend ostream& operator<<(ostream& console, const Ticket& ticket);
 	friend istream& operator>>(istream& in, Ticket& ticket);
+	friend Ticket operator+(int value, const Ticket& t);
+	friend Ticket operator++(Ticket& t);
 };
+
+//operator++ outside the class using a friend function PRE INCREMENTATION
+Ticket operator++(Ticket& t) {
+	t.price++;
+	return t;
+}
+
+//operator+ outside the class using a friend function
+Ticket operator+(int value, const Ticket& t) {
+	Ticket copy = t;
+	copy.price += value;
+	return copy;
+}
 
 //<< operator
 ostream& operator<<(ostream& console, const Ticket& ticket) {
