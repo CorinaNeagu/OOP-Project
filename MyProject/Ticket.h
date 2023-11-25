@@ -110,22 +110,14 @@ public:
 
 
 	//copy constructor
-	Ticket& operator=(const Ticket& ticket) {
-		if (ticket.nameShow != nullptr) {
-			if (this->nameShow != nullptr) {
-				delete[] this->nameShow;
-				this->nameShow = nullptr;
-			}
-			this->nameShow = new char[strlen(ticket.nameShow) + 1];
-			strcpy_s(this->nameShow, strlen(ticket.nameShow) + 1, ticket.nameShow);
-		}
-		else {
-			this->nameShow = nullptr;
-		}
+	Ticket(const Ticket& ticket):idTicket(++NO_TICKETS) {
+		
+		this->nameShow = new char[strlen(ticket.nameShow) + 1];
+		strcpy_s(this->nameShow, strlen(ticket.nameShow) + 1, ticket.nameShow);
+		
 		this->price = ticket.price;
 		this->text = ticket.text;
 		this->isVIP = ticket.isVIP;
-		return *this;
 	}
 
 	//destructor
@@ -138,6 +130,23 @@ public:
 	}
 	
 	//operator=
+	Ticket& operator=(const Ticket& ticket) {
+		if (ticket.nameShow != nullptr) {
+			if (this->nameShow != nullptr) {
+				delete[] this->nameShow;
+				this->nameShow = nullptr;
+			}
+			this->nameShow = new char[strlen(ticket.nameShow) + 1];
+			strcpy_s(this->nameShow, strlen(ticket.nameShow) + 1, ticket.nameShow);
+		}
+		else {
+			this->nameShow = nullptr;
+		}
+		this->isVIP = ticket.isVIP;
+		this->price = ticket.price;
+		this->text = ticket.text;
+		return *this;
+	}
 
 	friend ostream& operator<<(ostream& console, const Ticket& ticket);
 	friend istream& operator>>(istream& in, Ticket& ticket);
