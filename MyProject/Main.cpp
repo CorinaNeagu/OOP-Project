@@ -122,6 +122,68 @@ int main() {
 	//calling the copy constructor
 	Ticket t4 = t2;
 	cout << t4;
+	cout << endl;
+
+	Ticket t5("Hamlet", "Held on Lipscani", 200, false);
+	t5.printInfo();
 	
+	
+	////operator+ inside the class
+	//cout << endl << t3.getPrice(); //100
+	//cout << endl << t2.getPrice(); //100
+	//t3 = t2 + 60; // t3=160
+	//cout << endl << t3.getPrice(); //160
+	//cout << endl << t2.getPrice(); //100
+	
+
+	//operator+ outside the class
+	cout << endl << t3.getPrice(); //100
+	cout << endl << t2.getPrice(); //100
+	t3 = 60 + t2; // t3=160
+	cout << endl << t3.getPrice(); //160
+	cout << endl << t2.getPrice(); //100
+	cout << endl;
+
+	////operator ++ inside the class POST INCREMENTATION - error
+	//cout << endl << t2.getPrice(); //100
+	//cout << endl << t3.getPrice(); //160
+	//t2 = t3++; //t2 takes the price of t3, then t3 increments by 1
+	//cout << endl << t2.getPrice(); //160
+	//cout << endl << t3.getPrice(); //161
+
+
+	////operator ++ outside the class PRE INCREMENTATION
+	cout << endl << t2.getPrice(); //100
+	cout << endl << t3.getPrice(); //160
+	t3 = ++t2; //increment t2 by 1, then give this price to t3
+	cout << endl << t2.getPrice(); //101
+	cout << endl << t3.getPrice(); //101
+	cout << endl;
+
+
+	//
+	////calling the index operator
+	try {
+		cout << endl << t2[2] << endl; //nutcracker 0123456789
+	}
+	catch (exception ex) {
+		cout << ex.what();
+	}
+	cout << endl;
+
+	////calling the negation operator
+	cout << t2.getIsVIP();
+	cout << endl;
+	cout << !t2;
+
+	////calling the == operator
+	if (t2 == t5) { //not equal
+		cout << endl << "They are equal.";
+	}
+	else {
+		cout << endl << "They are not equal.";
+	}
+
+
 	return 0;
 }
