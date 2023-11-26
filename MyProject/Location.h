@@ -3,16 +3,15 @@
 #include<string.h>
 using namespace std;
 
-
 enum ZoneType { VIP, NORMAL };
 
 class Location {
-	string locationName;
-	char* locationOwner;
-	ZoneType type = NORMAL;
+	string locationName; //static field
+	char* locationOwner; //dynamically allocated field
+	ZoneType type;
 	int noRows;
-	int* seatsPerRow;
-	int noSeatsPerRow;
+	int* seats; //dynamically allocated field
+	int seatsPerRow; //static field, counter for int*
 
 	static int MAX_SEATS_NUMBER;
 public:
@@ -20,76 +19,27 @@ public:
 	Location() {
 		this->locationName = " ";
 		this->locationOwner = nullptr;
-		//ZoneType type = NORMAL;
-		this->noRows = 10;
-		this->seatsPerRow = nullptr;
-		this->noSeatsPerRow = 10;
+	    this->type = NORMAL;
+		this->noRows = 0;
+		this->seats = nullptr;
+		this->seatsPerRow = 0;
 
 	}
-
-	//setters & getters
-	string getLocatioName() {
-		return this->locationName;
-	}
-
-	void setLocationName(string locationName) {
-		if (locationName.length() < 2) {
-			throw exception("Wrong name. Too short.");
-		}
-		this->locationName = locationName;
-
-	}
-
-	char* getLocationOwner() const {
-		char* copyOwner = new char[strlen(this->locationOwner) + 1];
-		strcpy(copyOwner, this->locationOwner);
-		return copyOwner;
-	}
-
-	void setLocationOwner(const char* nameOwner) {
-		if (this->locationOwner != nullptr) {
-			delete[] this->locationOwner;
-			this->locationOwner = nullptr;
-		}
-		this->locationOwner = new char[strlen(nameOwner) + 1];
-		strcpy_s(this->locationOwner, strlen(nameOwner) + 1, nameOwner);
-	}
-
-	int getNoRows() const {
-		return this->noRows;
-	}
-
-	void setNoRows(int rows) {
-		if (rows < 1 && rows> 10) {
-			cout << endl << "There are only 10 rows available.";
-		}
-		else {
-			this->noRows = rows;
-		}
-	}
-
-	int getNoSeats() const {
-		int noSeats = noRows * noSeatsPerRow;
-		return noSeats;
-	}
-
-
-
 
 	//2 constructors with parameters
-	Location(string locationName, int noRows, int* seatsPerRow, int noSeats) {
+	Location(string locationName, int noRows, int* seats, int noSeats) {
 		this->locationName = locationName;
 		this->noRows = noRows;
-		if (seatsPerRow != nullptr && noSeatsPerRow > 0) {
-			this->seatsPerRow = new int[noSeatsPerRow];
-			for (int i = 0; i < noSeatsPerRow; i++) {
-				this->seatsPerRow[i] = seatsPerRow[i];
+		this->seatsPerRow = noSeats;
+
+		if (seats != nullptr) {
+			this->seats = new int[noSeats];
+			for (int i = 0; i < seatsPerRow; i++) {
+				this->seats[i] = seats[i];
 			}
-			this->noSeatsPerRow = noSeatsPerRow;
 		}
 		else {
-			this->seatsPerRow = nullptr;
-			this->noSeatsPerRow = 0;
+			this->seats = nullptr;
 		}
 
 		this->type = NORMAL;
@@ -100,17 +50,116 @@ public:
 		this->locationName = locationName;
 		this->type = type;
 
-		this->locationOwner = new char[strlen(owner) + 1];
-		strcpy_s(this->locationOwner, strlen(owner) + 1, owner);
+		if (owner == nullptr) {
+			throw exception("There is no such owner.");
+		}
+		else {
+			this->locationOwner = new char[strlen(owner) + 1];
+			strcpy_s(this->locationOwner, strlen(owner) + 1, owner);
+		}
 
+		this->noRows = 0;
+		this->seatsPerRow = 0;
+		this->seats = nullptr;
+	}
+
+
+	//setters & getters
+	string getLocatioName() {
+		return this->locationName;
+	}
+
+	void setLocationName(string locationName) {
+		if (locationName.size() < 2) {
+			throw exception("Name too short.");
+		}
 		this->locationName = locationName;
-		this->noRows = 10;
-		this->seatsPerRow = nullptr;
-		this->noSeatsPerRow = 10;
+
+	}
+
+	char* getLocationOwner() const {
+		if (this->locationOwner != nullptr) {
+			char* copyOwner = new char[strlen(this->locationOwner) + 1];
+			strcpy_s(copyOwner,strlen(this->locationOwner)+1, locationOwner);
+			return copyOwner;
+		}
+		else {
+			return nullptr;
+		}
+	}
+
+	void setLocationOwner(const char* nameOwner) {
+		if (locationOwner == nullptr) {
+			throw exception("No input.");
+		}
+		else {
+			if (this->locationOwner != nullptr) {
+				delete[] this->locationOwner;
+				this->locationOwner = nullptr;
+			}
+			this->locationOwner = new char[strlen(nameOwner) + 1];
+			strcpy_s(this->locationOwner, strlen(nameOwner) + 1, nameOwner);
+		}
+	}
+	int* getSeats() {
+		if (this->seats != nullptr) {
+			int* copySeats = new int[this->seatsPerRow];
+			for (int i = 0; i < this->seatsPerRow; i++) {
+				copySeats[i] = this->seats[i];
+			}
+			return copySeats;
+		}
+		else {
+			return nullptr;
+		}
+	}
+
+	void setSeats(int* seats) {
+		if (this->seats != nullptr) {
+			delete[] this->seats;
+			this->seats = nullptr;
+		} 
+		if (seats != nullptr) {
+			this->seats = new int[this->seatsPerRow];
+			for (int i = 0; i < this->seatsPerRow; i++) {
+				this->seats[i] = seats[i];
+			}
+		}
+		else {
+			this->seats = nullptr;
+		}
+	}
+
+	int getNoRows() const {
+		return this->noRows;
+	}
+
+	void setNoRows(int rows) {
+		if (rows < 1 && rows> 20) {
+			cout << endl << "There are only 20 rows available.";
+		}
+		else {
+			this->noRows = rows;
+		}
+	}
+
+	int getSeatsPerRow() const {
+		return this->seatsPerRow;
+	}
+	
+	void setSeatsPerRow(int seatsPerRow) {
+		if (seatsPerRow > 1 && seatsPerRow < 40) {
+			this->seatsPerRow = seatsPerRow;
+		}
+		else {
+			throw exception("Invalid input regarding the number of seats per row.");
+		}
+
 	}
 
 	//copy constructor
 	Location(const Location& loc) {
+		//cout << endl << "Calling the copy constructor."
 		this->locationName = loc.locationName;
 		this->type = loc.type;
 		this->noRows = loc.noRows;
@@ -118,30 +167,24 @@ public:
 		this->locationOwner = new char[strlen(loc.locationOwner) + 1];
 		strcpy_s(this->locationOwner, strlen(loc.locationOwner) + 1, loc.locationOwner);
 
-		if (loc.seatsPerRow != nullptr && loc.noSeatsPerRow > 0) {
-			this->seatsPerRow = new int[loc.noSeatsPerRow];
-			for (int i = 0; i < loc.noSeatsPerRow; i++) {
-				this->seatsPerRow[i] = loc.seatsPerRow[i];
-			}
-			this->noSeatsPerRow = loc.noSeatsPerRow;
-		}
-		else {
-			this->seatsPerRow = nullptr;
-			this->noSeatsPerRow = 0;
-		}
+		this->seats = new int[this->seatsPerRow];
+		for(int i=0;i<this->seatsPerRow;i++) {
+			this->seats[i] = loc.seats[i];
+		} 
+		this->seatsPerRow = loc.seatsPerRow;
 	}
 
 	//destructor
 	~Location() {
-		cout << endl << "Calling the destructor";
+		//cout << endl << "Calling the destructor";
 		if (this->locationOwner != nullptr) {
 			delete[] this->locationOwner;
 			this->locationOwner = nullptr;
 		}
 
-		if (this->seatsPerRow != nullptr) {
-			delete[] this->seatsPerRow;
-			this->seatsPerRow = nullptr;
+		if (this->seats != nullptr) {
+			delete[] this->seats;
+			this->seats = nullptr;
 		}
 	}
 
@@ -152,24 +195,56 @@ public:
 				delete[] this->locationOwner;
 				this->locationOwner = nullptr;
 			}
-		}
-
-		this->locationName = loc.locationName;
-		this->noRows = loc.noRows;
-		if (loc.seatsPerRow != nullptr && loc.noSeatsPerRow > 0) {
-			this->seatsPerRow = new int[loc.noSeatsPerRow];
-			for (int i = 0; i < loc.noSeatsPerRow; i++) {
-				this->seatsPerRow[i] = loc.seatsPerRow[i];
-			}
-			this->noSeatsPerRow = loc.noSeatsPerRow;
+			this->locationOwner = new char[strlen(loc.locationOwner) + 1];
+			strcpy_s(this->locationOwner, strlen(loc.locationOwner) + 1, loc.locationOwner);
 		}
 		else {
-			this->seatsPerRow = nullptr;
-			this->noSeatsPerRow = 0;
+			this->locationOwner = nullptr;
 		}
-		return *this;
+
+		if (this->seatsPerRow == loc.seatsPerRow) {
+			for (int i = 0; i < this->seatsPerRow; i++) {
+				this->seats[i] = loc.seats[i];
+			}
+			return *this;
+		}
+		else {
+			if (this->seats != nullptr) {
+				delete[] this->seats;
+				this->seats = nullptr;
+			}
+			this->seatsPerRow = loc.seatsPerRow;
+			this->seats = new int[this->seatsPerRow];
+			for (int i = 0; i < this->seatsPerRow; i++) {
+				this->seats[i] = loc.seats[i];
+			}
+		}
+			this->noRows = loc.noRows;
+			this->locationName = loc.locationName;
+			this->type = loc.type;
+			return *this;
 	}
 
+
+	//friend zone
+	friend ostream& operator<<(ostream& console, const Location& loc);
 };
 
-int MAX_SEATS_NUMBER = 100;
+//operator <<
+ostream& operator<<(ostream& console, const Location& loc) {
+	console << endl << "---------------------------";
+	console << endl << "The event takes place here: " << loc.locationName;
+	console << endl << "The owner of this location is: " << loc.locationOwner;
+	console << endl << "The number of rows is: " << loc.noRows;
+	console << endl << "There are " << loc.seatsPerRow << " seats per row.";
+	console << endl << "Total number of seats per row is: " << loc.noRows * loc.seatsPerRow << endl;
+	//console << endl << "What type of zone does this place have? " << loc.type;
+	return console;
+}
+
+
+
+
+//operator >>
+
+int Location::MAX_SEATS_NUMBER = 500;
