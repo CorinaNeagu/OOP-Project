@@ -237,20 +237,20 @@ public:
 	}
 
 	//operator+ inside the class
-	Event& operator+(int addDuration) {
+	Event operator+(int addDuration) {
 		Event copyEvent = *this;
 		copyEvent.duration += addDuration; 
 		return copyEvent;
 	}
 
 	//operator++ inside the class - POST INCREMENTATION
-	Event& operator++(int) {
+	Event operator++(int) {
 		Event copy = *this;
 		this->duration++;
 		return copy;
 	}
 
-	//generic method no 1
+	//generic method 
 	void printNoSeats() const {
 		if (this->seats == nullptr) {
 			cout << endl << "No seats.";
@@ -262,8 +262,7 @@ public:
 			}
 		}
 	}
-	//generic method no 2
-
+	
 	//indexing operator
 	char operator[](int index) {
 		if (index >= 0 && index < strlen(this->nameEvent)) {
@@ -276,7 +275,7 @@ public:
 
 	
 	//cast operator - explicit form 
-	explicit operator char() {
+	explicit operator int() {
 		return this->duration;
 	}
 
@@ -288,6 +287,14 @@ public:
 	}
 
 	//conditional operator
+	bool operator<(int value) {
+		if (this->duration < value) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	//equality operator ==
 	bool operator==(const Event& e) {
