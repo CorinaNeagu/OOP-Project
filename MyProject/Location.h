@@ -27,7 +27,7 @@ public:
 	}
 
 	//2 constructors with parameters
-	Location(string locationName, int noRows, int* seats, int noSeats) {
+	Location(string locationName, const char* name, int noRows, int* seats, int noSeats) {
 		this->locationName = locationName;
 		this->noRows = noRows;
 		this->seatsPerRow = noSeats;
@@ -42,8 +42,16 @@ public:
 			this->seats = nullptr;
 		}
 
+		if (name == nullptr) {
+			throw exception("Invalid");
+		}
+		else {
+			this->locationOwner = new char[strlen(name) + 1];
+			strcpy_s(this->locationOwner, strlen(name) + 1, name);
+
+		}
+
 		this->type = NORMAL;
-		this->locationOwner = nullptr;
 	}
 
 	Location(string locationName, const char* owner, ZoneType type) {
@@ -88,8 +96,8 @@ public:
 		}
 	}
 
-	void setLocationOwner(const char* nameOwner) {
-		if (locationOwner == nullptr) {
+	void* setLocationOwner(const char* nameOwner) {
+		if (nameOwner == nullptr) {
 			throw exception("No input.");
 		}
 		else {
@@ -225,10 +233,28 @@ public:
 			return *this;
 	}
 
+	//operator+ inside the class
+
+	//operator++ inside the class - POST INCREMENTATION
+
+	//indexing operator
+
+	//the negation operator !
+
+	//equality operator ==
+
 
 	//friend zone
 	friend ostream& operator<<(ostream& console, const Location& loc);
+	friend istream& operator>>(istream& in, Location& loc);
 };
+
+//operator+ outside the class using a friend method
+
+
+//operator++ outside the class using a friend method PRE INCREMENTATION
+
+
 
 //operator <<
 ostream& operator<<(ostream& console, const Location& loc) {
@@ -242,9 +268,22 @@ ostream& operator<<(ostream& console, const Location& loc) {
 	return console;
 }
 
+istream& operator>>(istream& in, Location& loc) {
+	cout << endl << "The name of the owner is: ";
+	char buffer[100];
+	in.getline(buffer, 100); //for reading with spaces
+	in.clear();
+	loc.setLocationOwner(buffer);
+		
+	cout << endl << "The name of this location is: ";
+	in >> loc.locationName;
+	cout << endl << "The number of rows available is: ";
+	in >> loc.noRows;
+	cout << endl<< "The number of available seats per each row is: ";
+	in >> loc.seatsPerRow;
+	
+	return in;
 
-
-
-//operator >>
+}
 
 int Location::MAX_SEATS_NUMBER = 500;
