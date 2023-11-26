@@ -15,7 +15,6 @@ private:
 	bool isSoldOut;
 public:
 	static int NO_EVENTS;
-	//static int MAX_NO_SEATS;
 
 public:
 	//default constructor
@@ -84,16 +83,21 @@ public:
 	} 
 
 	void setNameEvent(const char* nameEvent) {
-		if (nameEvent == nullptr) {
-			throw exception("No input.");
+		if (strlen(nameEvent) < 2) {
+			throw exception("Invalid.");
 		}
 		else {
-			if (this->nameEvent != nullptr) {
-				delete[] this->nameEvent;
-				this->nameEvent = nullptr;
+			if (nameEvent == nullptr) {
+				throw exception("No input.");
 			}
-			this->nameEvent = new char[strlen(nameEvent) + 1];
-			strcpy_s(this->nameEvent, strlen(nameEvent) + 1, nameEvent);
+			else {
+				if (this->nameEvent != nullptr) {
+					delete[] this->nameEvent;
+					this->nameEvent = nullptr;
+				}
+				this->nameEvent = new char[strlen(nameEvent) + 1];
+				strcpy_s(this->nameEvent, strlen(nameEvent) + 1, nameEvent);
+			}
 		}
 	}
 

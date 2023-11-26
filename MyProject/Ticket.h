@@ -60,16 +60,21 @@ public:
 	}
 
 	void setNameShow(const char* name) {
-		if (nameShow == nullptr) {
+		if (strlen(nameShow) < 2) {
 			throw exception("Invalid");
 		}
 		else {
-			if (this->nameShow != nullptr) {
-				delete[] this->nameShow;
-				this->nameShow = nullptr;
+			if (nameShow == nullptr) {
+				throw exception("No input");
 			}
-			this->nameShow = new char[strlen(name) + 1];
-			strcpy_s(this->nameShow, strlen(name) + 1, name);
+			else {
+				if (this->nameShow != nullptr) {
+					delete[] this->nameShow;
+					this->nameShow = nullptr;
+				}
+				this->nameShow = new char[strlen(name) + 1];
+				strcpy_s(this->nameShow, strlen(name) + 1, name);
+			}
 		}
 	}
 

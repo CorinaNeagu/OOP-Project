@@ -98,16 +98,21 @@ public:
 	}
 
 	void setLocationOwner(const char* nameOwner) {
-		if (nameOwner == nullptr) {
-			throw exception("No input.");
+		if (strlen(locationOwner) < 2) {
+			throw exception("Invalid");
 		}
 		else {
-			if (this->locationOwner != nullptr) {
-				delete[] this->locationOwner;
-				this->locationOwner = nullptr;
+			if (nameOwner == nullptr) {
+				throw exception("No input.");
 			}
-			this->locationOwner = new char[strlen(nameOwner) + 1];
-			strcpy_s(this->locationOwner, strlen(nameOwner) + 1, nameOwner);
+			else {
+				if (this->locationOwner != nullptr) {
+					delete[] this->locationOwner;
+					this->locationOwner = nullptr;
+				}
+				this->locationOwner = new char[strlen(nameOwner) + 1];
+				strcpy_s(this->locationOwner, strlen(nameOwner) + 1, nameOwner);
+			}
 		}
 	}
 
