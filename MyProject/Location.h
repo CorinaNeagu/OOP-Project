@@ -12,8 +12,6 @@ class Location {
 	int noRows;
 	int* seats; //dynamically allocated field
 	int seatsPerRow; //static field, counter for int*
-
-	static int MAX_SEATS_NUMBER;
 public:
 	//default constructor
 	Location() {
@@ -23,6 +21,7 @@ public:
 		this->noRows = 0;
 		this->seats = nullptr;
 		this->seatsPerRow = 0;
+		
 
 	}
 
@@ -52,11 +51,13 @@ public:
 		}
 
 		this->type = NORMAL;
+		
 	}
 
 	Location(string locationName, const char* owner, ZoneType type) {
 		this->locationName = locationName;
 		this->type = type;
+		
 
 		if (owner == nullptr) {
 			throw exception("There is no such owner.");
@@ -96,7 +97,7 @@ public:
 		}
 	}
 
-	void* setLocationOwner(const char* nameOwner) {
+	void setLocationOwner(const char* nameOwner) {
 		if (nameOwner == nullptr) {
 			throw exception("No input.");
 		}
@@ -109,6 +110,9 @@ public:
 			strcpy_s(this->locationOwner, strlen(nameOwner) + 1, nameOwner);
 		}
 	}
+
+	
+
 	int* getSeats() {
 		if (this->seats != nullptr) {
 			int* copySeats = new int[this->seatsPerRow];
@@ -172,8 +176,13 @@ public:
 		this->type = loc.type;
 		this->noRows = loc.noRows;
 
-		this->locationOwner = new char[strlen(loc.locationOwner) + 1];
-		strcpy_s(this->locationOwner, strlen(loc.locationOwner) + 1, loc.locationOwner);
+		if (loc.locationOwner != nullptr) {
+			this->locationOwner = new char[strlen(loc.locationOwner) + 1];
+			strcpy_s(this->locationOwner, strlen(loc.locationOwner) + 1, loc.locationOwner);
+		}
+		else {
+			this->locationOwner = nullptr;
+		}
 
 		this->seats = new int[this->seatsPerRow];
 		for(int i=0;i<this->seatsPerRow;i++) {
@@ -234,26 +243,77 @@ public:
 	}
 
 	//operator+ inside the class
+	Location operator+(int addRoomNumber) {
+		Location copyLocation = *this;
+		copyLocation.noRows += addRoomNumber;
+		return copyLocation;
+	}
 
 	//operator++ inside the class - POST INCREMENTATION
+	Location operator++(int) {
+		Location copy = *this;
+		this->noRows++;
+		return copy;
+	}
 
 	//indexing operator
+	char operator[](int index) {
+		if (index >= 0 && index < strlen(this->locationOwner)) {
+			return this->locationOwner[index];
+		}
+		else {
+			throw exception("Index out of range.");
+		}
+	}
 
 	//the negation operator !
+	bool operator!() {
+		return this->noRows >= 15;
+	}
 
 	//equality operator ==
+	bool operator==(const Location& loc) {
+		if (this->noRows == loc.noRows && strcmp(this->locationOwner, locationOwner) == 0 && this->seatsPerRow == loc.seatsPerRow &&
+			this->type == loc.type && this->locationName == loc.locationName) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	//conditional operator >
+	bool operator>(int value) {
+		if (this->noRows > value) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 
 	//friend zone
 	friend ostream& operator<<(ostream& console, const Location& loc);
 	friend istream& operator>>(istream& in, Location& loc);
+	friend Location operator+(int addRow, const Location& loc);
+	friend Location operator++(Location& loc);
+
 };
 
-//operator+ outside the class using a friend method
-
+//operator- outside the class using a friend method
+Location operator+(int addRow, const Location& loc) {
+	Location copy = loc;
+	copy.seatsPerRow += addRow;
+	return copy;
+	
+}
 
 //operator++ outside the class using a friend method PRE INCREMENTATION
-
+Location operator++(Location& loc) {
+	loc.seatsPerRow++;
+	return loc;
+}
 
 
 //operator <<
@@ -286,4 +346,3 @@ istream& operator>>(istream& in, Location& loc) {
 
 }
 
-int Location::MAX_SEATS_NUMBER = 500;
