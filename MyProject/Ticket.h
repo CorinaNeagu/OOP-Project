@@ -179,6 +179,14 @@ public:
 	}
 
 	//conditional operator
+	bool operator>(int priceValue) {
+		if (this->price > priceValue) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	//equality operator ==
 	bool operator==(const Ticket& t) {
@@ -201,9 +209,6 @@ public:
 		cout << endl << "The price of this ticket is: " << this->price;
 		cout << endl << "Is this ticket a VIP one? " << (this->isVIP ? "Yes." : "No.");
 	}
-
-	//generic method no 2 - 
-
 
 	//friends
 	friend ostream& operator<<(ostream& console, const Ticket& ticket);
