@@ -237,14 +237,14 @@ public:
 	}
 
 	//operator+ inside the class
-	Event operator+(int addDuration) {
+	Event& operator+(int addDuration) {
 		Event copyEvent = *this;
 		copyEvent.duration += addDuration; 
 		return copyEvent;
 	}
 
 	//operator++ inside the class - POST INCREMENTATION
-	Event operator++(int) {
+	Event& operator++(int) {
 		Event copy = *this;
 		this->duration++;
 		return copy;
@@ -275,9 +275,9 @@ public:
 
 	
 	//cast operator - explicit form 
-	explicit operator int() {
+	/*explicit operator int() {
 		return this->duration;
-	}
+	}*/
 
 
 	//the negation operator !

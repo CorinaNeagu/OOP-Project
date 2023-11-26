@@ -148,15 +148,15 @@ public:
 		return *this;
 	}
 
-	//operator + inside the class - smt wrong here
-	Ticket& operator+(int addPrice) {
+	//operator + inside the class - it works now
+	Ticket operator+(int addPrice) {
 		Ticket copyTicket = *this;
 		copyTicket.price += addPrice;
 		return copyTicket;
 	}
 
 	//operator ++ inside the class POST INCREMENTATION - doesn't work
-	Ticket& operator++(int) {
+	Ticket operator++(int) {
 		Ticket copy = *this;
 		this->price++;
 		return copy;
