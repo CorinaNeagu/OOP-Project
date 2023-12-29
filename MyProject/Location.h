@@ -6,12 +6,14 @@ using namespace std;
 enum ZoneType { VIP, NORMAL };
 
 class Location {
+protected:
 	string locationName; //static field
 	char* locationOwner; //dynamically allocated field
 	ZoneType type;
 	int noRows;
 	int* seats; //dynamically allocated field
 	int seatsPerRow; //static field, counter for int*
+	int totalNoOfSeats;
 public:
 	//default constructor
 	Location() {
@@ -23,6 +25,11 @@ public:
 		this->seatsPerRow = 0;
 		
 
+	}
+	//constructor for deriving another class
+	Location(string locationName, int totalNoOfSeats) {
+		this->locationName = locationName;
+		this->totalNoOfSeats=totalNoOfSeats;
 	}
 
 	//2 constructors with parameters
@@ -72,6 +79,11 @@ public:
 		this->seats = nullptr;
 	}
 
+
+	virtual void printInfo() {
+		cout << endl << "Name of location: " << this->locationName;
+		cout << endl << "Has " << this->totalNoOfSeats << " available.";
+	}
 
 	//setters & getters
 	string getLocatioName() {
@@ -176,7 +188,7 @@ public:
 
 	//copy constructor
 	Location(const Location& loc) {
-		//cout << endl << "Calling the copy constructor."
+		//cout << endl << "Calling the copy constructor.";
 		this->locationName = loc.locationName;
 		this->type = loc.type;
 		this->noRows = loc.noRows;
@@ -350,4 +362,34 @@ istream& operator>>(istream& in, Location& loc) {
 	return in;
 
 }
+
+//inheritance  
+class Address:public Location {
+	string street =" ";
+	int streetNumber=0;
+	Location location= Location(" ", 0); //1-1 relation with the location
+
+public:
+	Address() {
+
+	}
+
+	Address(string street, int streetNumber) :Location(locationName, totalNoOfSeats) {
+		this->street = street;
+		this->streetNumber = streetNumber;
+	}
+
+	void printInfo() {
+		cout << endl << "Name of location: " << this->locationName;
+		cout << endl << "Has " << this->totalNoOfSeats << " seats available.";
+		cout << endl << "Street name: " << this->street;
+		cout << endl << "At number: " << this->streetNumber;
+		
+	}
+
+	~Address() {
+		cout << endl << "The address destructor";
+	}
+
+};
 
