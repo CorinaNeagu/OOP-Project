@@ -249,12 +249,6 @@ ostream& operator<<(ostream& console, const Ticket& ticket) {
 
 //>> operator
 istream& operator>>(istream& in, Ticket& ticket) {
-	/*cout << endl << "This ticket is for: ";
-	char buffer[100];
-	in.getline(buffer, 100);
-	in.clear();
-	ticket.setNameShow(buffer);*/
-
 	cout << endl << "This ticket is for: ";
 	string buffer;
 	in >> buffer;
@@ -283,25 +277,47 @@ class SpectatorTicket :public Ticket {
 	int uniqueID=0;
 
 public:
-	SpectatorTicket(TicketType type, int uniqueID):Ticket(nameShow, price, isVIP) {
-		this->type = type;
-		this->uniqueID = uniqueID;
+	SpectatorTicket() {
+
 	}
 
-	int generateUniqueID()
-	{
-		srand(time(nullptr)); //srand() is used to initialize random number generators
-		int uniqueID = rand() % 1000;
-		return uniqueID;
+	SpectatorTicket(TicketType type, int uniqueID):Ticket("Concert", 125, true) {
+		this->type = type;
+		this->uniqueID = uniqueID;
 	}
 
 	void printInfo() {
 		this->Ticket::printInfo();
 		cout << endl << "Ticket Type: " << this->type;
-		cout << endl << "Unique ID is :" << this->generateUniqueID();
+		cout << endl << "Unique ID is :" << this->uniqueID;
 	}
 
 	~SpectatorTicket() {
 
 	}
+};
+
+class PaidTicket : public Ticket {
+	bool hasBeenPayed = false;
+	string date= " ";
+public:
+	PaidTicket() {
+
+	}
+
+	PaidTicket(bool payed, string date) :Ticket("Play", 75, false) {
+		this->hasBeenPayed = payed;
+		this->date = date;
+	}
+
+	void printInfo() {
+		this->Ticket::printInfo();
+		cout << endl << "Has this ticket been payed? " << this->hasBeenPayed;
+		cout << endl << "If so, when? On " << this->date;
+	}
+
+	~PaidTicket() {
+
+	}
+
 };
