@@ -271,9 +271,6 @@ istream& operator>>(istream& in, Ticket& ticket) {
 	cout << "Is this a VIP ticket? ";
 	in >> ticket.isVIP;
 
-	/*cout << "The ID of this ticket is: ";
-	in >> ticket.idTicket;*/
-
 	return in;
 }
 int Ticket::NO_TICKETS = 0;
@@ -286,7 +283,7 @@ class SpectatorTicket :public Ticket {
 	int uniqueID=0;
 
 public:
-	SpectatorTicket(TicketType type, int uniqueID) {
+	SpectatorTicket(TicketType type, int uniqueID):Ticket(nameShow, price, isVIP) {
 		this->type = type;
 		this->uniqueID = uniqueID;
 	}

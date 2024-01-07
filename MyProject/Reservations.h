@@ -128,12 +128,13 @@ public:
 		//friend ostream& operator<<(ostream& console, Reservations& r);
 	};
 	
-	//ostream& operator<<(ostream& console, Reservations& r) {
-	//	console << endl << r.guestName << " has reserved " << r.noSeatsReserved << " for "
-	//		<< r.eventName << " .";
-	//	for (int i = 0; i < r.noSeatsReserved; i++) {
-	//		console << endl << "The seats reserved are: " << r.seatsReserved[i];
-	//	}
-	//	console << endl << "The seats have been payed for: " << r.alreadyPayed;
-	//	return console;
-	//}
+	// operator << doesn't work - it gives an error about multiple definied symbols
+	/*ostream& operator<<(ostream& console, Reservations& r) {
+		console << endl << r.guestName << " has reserved " << r.noSeatsReserved << " for "
+			<< r.eventName << " .";
+		for (int i = 0; i < r.noSeatsReserved; i++) {
+			console << endl << "The seats reserved are: " << r.seatsReserved[i];
+		}
+		console << endl << "The seats have been payed for: " << r.alreadyPayed;
+		return console;
+	}*/
