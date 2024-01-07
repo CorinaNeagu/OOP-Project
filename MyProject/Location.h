@@ -398,6 +398,33 @@ public:
 	~Address() {
 		//cout << endl << "The address destructor";
 	}
-
 };
+
+enum Continent {EUROPA, NORTH_AMERICA, SOUTH_AMERICA, AUSTRALIA, ASIA, ANTARCTICA, AFRICA};
+
+class GeographicPosition : public Location {
+	string city;
+	string country;
+	Continent continent;
+
+public:
+	GeographicPosition() {
+
+	}
+
+	GeographicPosition(string city, string country, Continent continent) : Location("Unirii", 450) {
+		this->city = city;
+		this->country = country;
+		this->continent = continent;
+	}
+
+	void printInfo() {
+		this->Location::printInfo();
+		cout << endl << "Location can be found in the city of " << this->city << " in the country " << this->country << " on the " << this->continent << " continent.";
+	}
+
+	~GeographicPosition() {
+	}
+};
+
 
