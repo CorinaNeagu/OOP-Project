@@ -275,24 +275,32 @@ int main() {
 
 			cout << endl << "Testing the inheritance of a new class.";
 			Location loc1("Herastrau", 200);
-			//loc1.printInfo();
-			//cout << endl << "--------------------";
 			Address a1("Aviatorilor", 23);
-			//a1.printInfo();
-			//cout << endl << "--------------------";
 			Address a2("Unirii", 14);
-			//a2.printInfo();
+			GeographicPosition g1("Bucharest", "Romania", Continent::EUROPA);
+			//GeographicPosition g2("Beijing", "China", Continent::ASIA);
+			
+			Location* location[3]; //array of pointers to Location
+			location[0] = &loc1;
+			location[1] = &a1;
+			location[2] = &a2;
 
-			Location* everyone[3]; //array of pointers to Location
-			everyone[0] = &loc1;
-			everyone[1] = &a1;
-			everyone[2] = &a2;
-
-			cout << endl << "-----------------Upcasting------------";
+			cout << endl << "-----------------Upcasting for Location------------";
 			for (int i = 0; i < 3; i++) {
-				everyone[i]->printInfo();
+				location[i]->printInfo();
 				cout << endl;
 			}
+
+			GeographicPosition* position[1];
+			position[1] = &g1;
+			//position[2]=&g2;
+
+			cout << endl << "---------------Upcasting for Geographic Position";
+			for (int i = 0; i < 1; i++) {
+				position[i]->printInfo();
+				cout << endl;
+			}
+			
 
 		}
 		else  if (option == 3) {
