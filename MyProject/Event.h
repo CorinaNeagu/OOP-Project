@@ -6,7 +6,7 @@ using namespace std;
 
 
 class Event {
-protected:
+private:
 	const int eventCounter;
 	char* nameEvent; //dynamic array of characters
 	int duration;
@@ -240,12 +240,6 @@ public:
 		return *this;
 	}
 
-	//virtual method
-	virtual void printInfo() {
-		cout << endl << "Event: " << this->nameEvent << " lasts for " << this->duration << " minutes.";
-
-	}
-
 	//operator+ inside the class
 	Event& operator+(int addDuration) {
 		Event copyEvent = *this;
@@ -348,12 +342,10 @@ ostream& operator<<(ostream& console, const Event& event) {
 
 istream& operator>>(istream& in, Event& event) {
 	cout << endl << "The name of the event is: ";
-	string buffer;
-	in >> buffer;
-	event.setNameEvent(buffer.c_str()); 
-	//in.getline(buffer, 100); //reading with spaces
-	//in.clear();
-	//event.setNameEvent(buffer);
+	char buffer[100]; 
+	in.getline(buffer, 100); //reading with spaces
+	in.clear();
+	event.setNameEvent(buffer);
 
 	cout << "The duration in minutes of the event is: ";
 	in >> event.duration;
@@ -366,56 +358,3 @@ istream& operator>>(istream& in, Event& event) {
 }
 
 int Event::NO_EVENTS = 0;
-
-//inheritance
-class EventHour : public Event {
-	int eventHour = 00;
-	int eventMinute = 00;
-
-public:
-	EventHour() {
-
-	}
-
-	EventHour(int eventHour, int eventMinute) :Event("Concert", 75) {
-		this->eventHour = eventHour;
-		this->eventMinute = eventMinute;
-	}
-
-
-	void printInfo() {
-		this->Event::printInfo();
-		cout << endl << "Event starts at: " << this->eventHour << ":" << this->eventMinute;
-	}
-
-	~EventHour() {
-
-	}
-};
-
-
-class EventDate: public Event {
-	int eventDay = 1;
-	string eventMonth = " ";
-	int eventYear = 2023;
-public:
-	EventDate() {
-
-	}
-
-	EventDate(int EventDay, string EventMonth, int EventYear) : Event("Concert", 75) {
-		this->eventDay = EventDay;
-		this->eventMonth = EventMonth;
-		this->eventYear = EventYear;
-	}
-
-	void printInfo() {
-		this->Event::printInfo();
-		cout << endl << "Event takes place on the " << this->eventDay << " of " << this->eventMonth << ", " << this->eventYear;
-	}
-
-	~EventDate() {
-
-	}
-
-};
