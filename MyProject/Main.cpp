@@ -398,24 +398,46 @@ int main() {
 			cout << endl;
 			cout << endl << "Testing the inheritance of a new class.";
 			Ticket ticket1("Concert", 25, false);
-			//ticket1.printInfo();
-			cout << endl << "--------------------";
 			Ticket ticket2("Theater", "Held online", 65, false);
-			//ticket2.printInfo();
-			cout << endl << "--------------------";
 			Ticket ticket3("Cinema", 25, false);
-			//ticket3.printInfo();
-
+			SpectatorTicket spectator1(TicketType::ADULT, 25);
+			SpectatorTicket spectator2(TicketType::STUDENT, 10);
+			SpectatorTicket spectator3(TicketType::CHILD, 5);
+			PaidTicket paid1(true, "25.12.2023");
+			PaidTicket paid2(false, " ");
+			
 			Ticket* tickets[3]; //array of pointers to Ticket
 			tickets[0] = &ticket1;
 			tickets[1] = &ticket2;
 			tickets[2] = &ticket3;
-			
+
+			SpectatorTicket* spectators[3];
+			spectators[0] = &spectator1;
+			spectators[1] = &spectator2;
+			spectators[2] = &spectator3;
+
+			PaidTicket* paid[2];
+			paid[0] = &paid1;
+			paid[1] = &paid2;
 
 			cout << endl;
 			cout << endl << "-----------------Upcasting------------" << endl;
 			for (int i = 0; i < 3; i++) {
 				tickets[i]->printInfo();
+				cout << endl;
+			}
+
+			cout << endl;
+			cout << endl << "-------------------Upcasting for SpectatorTicket";
+			for (int i = 0; i < 3; i++) {
+				spectators[i]->printInfo();
+				cout << endl;
+			}
+
+			cout << endl;
+			cout << endl << "--------------Upcasting for PaidTicket";
+			for (int i = 0; i < 2; i++) {
+				paid[i]->printInfo();
 				cout << endl;
 			}
 		}
