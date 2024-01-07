@@ -119,6 +119,47 @@ int main() {
 
 			cin >> e2;
 
+			cout << endl;
+			cout << endl << "Testing the inheritance of a new class.";
+			Event event1("Concert", 25);
+			Event event2("Theater", 23);
+			EventHour event3(12, 35);
+			EventHour event4(14, 45);
+			EventDate event5(15, "January", 2023);
+			EventDate event6(16, "February", 2023);
+
+			Event* events[2]; //array of pointers to EVENT
+			events[0] = &event1;
+			events[1] = &event2;
+
+			cout << endl << "-----------------Upcasting------------";
+			for (int i = 0; i < 2; i++) {
+				events[i]->printInfo();
+				cout << endl;
+			}
+
+			EventHour* hour[2];
+			hour[0] = &event3;
+			hour[1] = &event4;
+
+			cout << endl << "-----------------Upcasting for EventHour------------";
+			for (int i = 0; i < 2; i++) {
+				hour[i]->printInfo();
+				cout << endl;
+			}
+
+			EventDate* date[2];
+			date[0] = &event5;
+			date[1] = &event6;
+
+			cout << endl << "-----------------------Upcasting for EventDate----------";
+			for (int i = 0; i < 2; i++) {
+				date[i]->printInfo();
+				cout << endl;
+			}
+
+
+			cout << endl;
 
 		}
 		else if (option == 2) {
