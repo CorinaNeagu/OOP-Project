@@ -18,6 +18,7 @@ int main() {
 		cout << "5.Exit" << endl;
 
 		int option;
+		cout << "Enter an option: ";
 		cin >> option;
 
 		if (option == 1) {
@@ -233,13 +234,13 @@ int main() {
 
 			cout << endl << "Testing the inheritance of a new class.";
 			Location loc1("Herastrau", 200);
-			loc1.printInfo();
-			cout << endl << "--------------------";
+			//loc1.printInfo();
+			//cout << endl << "--------------------";
 			Address a1("Aviatorilor", 23);
-			a1.printInfo();
-			cout << endl << "--------------------";
+			//a1.printInfo();
+			//cout << endl << "--------------------";
 			Address a2("Unirii", 14);
-			a2.printInfo();
+			//a2.printInfo();
 
 			Location* everyone[3]; //array of pointers to Location
 			everyone[0] = &loc1;
@@ -249,6 +250,7 @@ int main() {
 			cout << endl << "-----------------Upcasting------------";
 			for (int i = 0; i < 3; i++) {
 				everyone[i]->printInfo();
+				cout << endl;
 			}
 
 		}
@@ -272,7 +274,6 @@ int main() {
 			Ticket t2("Nutcracker", "Held at National Opera House", 100, true);
 			cout << t2;
 			cout << endl;
-			cin >> t2;
 
 			////calling the operator=
 			Ticket t3;
@@ -352,7 +353,32 @@ int main() {
 			else {
 				cout << endl << "They are not equal.";
 			}
+
+			cout << endl;
+			cout << endl << "Testing the inheritance of a new class.";
+			Ticket ticket1("Concert", 25, false);
+			//ticket1.printInfo();
+			cout << endl << "--------------------";
+			Ticket ticket2("Theater", "Held online", 65, false);
+			//ticket2.printInfo();
+			cout << endl << "--------------------";
+			Ticket ticket3("Cinema", 25, false);
+			//ticket3.printInfo();
+
+			Ticket* tickets[3]; //array of pointers to Ticket
+			tickets[0] = &ticket1;
+			tickets[1] = &ticket2;
+			tickets[2] = &ticket3;
+			
+
+			cout << endl;
+			cout << endl << "-----------------Upcasting------------" << endl;
+			for (int i = 0; i < 3; i++) {
+				tickets[i]->printInfo();
+				cout << endl;
+			}
 		}
+
 		else if (option == 4) {
 			//testing the fourth class for text files - reservations
 		cout << endl << "--------------------------------";
