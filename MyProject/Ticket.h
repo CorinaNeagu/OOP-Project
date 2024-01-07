@@ -5,6 +5,7 @@ using namespace std;
 
 
 class Ticket {
+protected:
 	const int idTicket;
 	char* nameShow;
 	string text;
@@ -202,7 +203,7 @@ public:
 	}
 
 	//generic method no 1 - displaying ticket information
-	void printInfo() {
+	virtual void printInfo() {
 		cout << endl << "------------------------";
 		if (this->nameShow != nullptr) {
 			cout << endl << "This ticket is for: " << this->nameShow;
@@ -213,6 +214,7 @@ public:
 		cout << endl << "Description: " << this->text;
 		cout << endl << "The price of this ticket is: " << this->price;
 		cout << endl << "Is this ticket a VIP one? " << (this->isVIP ? "Yes." : "No.");
+		cout << endl << "The id of this ticket is: " << this->idTicket;
 	}
 
 	//friends
@@ -239,7 +241,7 @@ Ticket operator+(int value, const Ticket& t) {
 ostream& operator<<(ostream& console, const Ticket& ticket) {
 	console << endl << "----------------------------";
 	console << endl << "The ticket for " << ticket.nameShow << " costs " << ticket.price << ".";
-	console << endl << "Some information about this show: " << ticket.text;
+	console << endl << "Some information about this show (has to be at least 5 characters, otherwise it will throw an exception): " << ticket.text;
 	console << endl << "The number of this ticket is: " << ticket.idTicket;
 	console << endl << "This ticket is a VIP one: " << ticket.isVIP;
 	return console;
@@ -247,21 +249,62 @@ ostream& operator<<(ostream& console, const Ticket& ticket) {
 
 //>> operator
 istream& operator>>(istream& in, Ticket& ticket) {
-	cout << endl << "This ticket is for: ";
+	/*cout << endl << "This ticket is for: ";
 	char buffer[100];
 	in.getline(buffer, 100);
 	in.clear();
-	ticket.setNameShow(buffer);
+	ticket.setNameShow(buffer);*/
+
+	cout << endl << "This ticket is for: ";
+	string buffer;
+	in >> buffer;
+	ticket.setNameShow(buffer.c_str());
 
 	cout << "The price of this ticket is: ";
 	in >> ticket.price;
 
-	cout << "Some information about this event: ";
-	in >> ticket.text;
+	cout << "Some information about this event(has to be at least 5 characters): ";
+	string bufferText;
+	in >> bufferText;
+	ticket.setText(bufferText);
 
 	cout << "Is this a VIP ticket? ";
 	in >> ticket.isVIP;
 
+	/*cout << "The ID of this ticket is: ";
+	in >> ticket.idTicket;*/
+
 	return in;
 }
 int Ticket::NO_TICKETS = 0;
+
+//inheritance
+enum TicketType { CHILD, STUDENT, ADULT, RETIREE };
+
+class SpectatorTicket :public Ticket {
+	TicketType type=ADULT;
+	int uniqueID=0;
+
+public:
+	SpectatorTicket(TicketType type, int uniqueID) {
+		this->type = type;
+		this->uniqueID = uniqueID;
+	}
+
+	int generateUniqueID()
+	{
+		srand(time(nullptr)); //srand() is used to initialize random number generators
+		int uniqueID = rand() % 1000;
+		return uniqueID;
+	}
+
+	void printInfo() {
+		this->Ticket::printInfo();
+		cout << endl << "Ticket Type: " << this->type;
+		cout << endl << "Unique ID is :" << this->generateUniqueID();
+	}
+
+	~SpectatorTicket() {
+
+	}
+};
