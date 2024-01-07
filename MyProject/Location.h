@@ -23,6 +23,7 @@ public:
 		this->noRows = 0;
 		this->seats = nullptr;
 		this->seatsPerRow = 0;
+		this->totalNoOfSeats = 0;
 		
 
 	}
@@ -346,11 +347,16 @@ ostream& operator<<(ostream& console, const Location& loc) {
 }
 
 istream& operator>>(istream& in, Location& loc) {
+	//cout << endl << "The name of the owner is: ";
+	//char buffer[100];
+	//in.getline(buffer, 100); //for reading with spaces
+	//in.clear();
+	//loc.setLocationOwner(buffer);
+
 	cout << endl << "The name of the owner is: ";
-	char buffer[100];
-	in.getline(buffer, 100); //for reading with spaces
-	in.clear();
-	loc.setLocationOwner(buffer);
+	string buffer;
+	in >> buffer;
+	loc.setLocationOwner(buffer.c_str());
 		
 	cout << endl << "The name of this location is: ";
 	in >> loc.locationName;
@@ -379,16 +385,18 @@ public:
 		this->streetNumber = streetNumber;
 	}
 
+	//overriding
 	void printInfo() {
-		cout << endl << "Name of location: " << this->locationName;
-		cout << endl << "Has " << this->totalNoOfSeats << " seats available.";
+		//cout << endl << "Name of location: " << this->locationName;
+		//cout << endl << "Has " << this->totalNoOfSeats << " available.";
+		this->Location::printInfo();
 		cout << endl << "Street name: " << this->street;
 		cout << endl << "At number: " << this->streetNumber;
 		
 	}
 
 	~Address() {
-		cout << endl << "The address destructor";
+		//cout << endl << "The address destructor";
 	}
 
 };
