@@ -51,13 +51,15 @@ int main() {
 
 			////operator+ inside the class 
 			cout << endl;
+			cout << endl << "Operator + inside the class" << endl;
 			cout << e3.getDuration(); //30
 			cout << endl << e5.getDuration(); //90
 			e5 = e3 + 2; //e5 = 90+2
 			cout << endl << e5.getDuration(); //92
+			cout << endl;
 
 			////operator+ outside the class
-			cout << endl;
+			cout << endl << "Operator + outside the class";
 			cout << endl << e3.getDuration(); //30
 			cout << endl << e5.getDuration(); //32
 			e5 = 2 + e3; //e5=2+30
@@ -67,12 +69,13 @@ int main() {
 
 			////calling operator++ inside the class
 			////POST INCREMENTATION
-			cout << endl;
+			cout << endl << "Operator ++ inside the class";
 			cout << endl << e3.getDuration(); //30
 			cout << endl << e2.getDuration(); //90
 			e3 = e2++; //e3 takes the duration of e2, then e2 duration increments by 1
 			cout << endl << e3.getDuration(); //30
 			cout << endl << e2.getDuration(); //91
+			cout << endl;
 
 			////calling operator++ outside the class
 			////PRE INCREMENTATION - doesn't work
@@ -84,9 +87,10 @@ int main() {
 			//cout << endl << e2.getDuration();
 
 			cout << endl;
-			////calling the index operator
+			cout << endl;
+			cout << "Index operator";
 			try {
-				cout << endl << e2[2] << endl; //play 0123
+				cout << endl << e2[2] << endl; //play 0123 - a
 			}
 			catch (exception ex) {
 				cout << ex.what();
@@ -95,13 +99,18 @@ int main() {
 			cout << endl;
 
 			////calling the ! operator
-			cout << e4.getIsSoldOut();
+			cout << endl << "Operator !"<<endl;
+			cout << e4.getIsSoldOut(); //0
 			cout << endl;
-			cout << !e4;
+			cout << !e4; //1
 
 			////1-true; 0-false
 
+			cout << endl;
+			cout << endl;
+
 			////calling the < operator
+			cout << endl <<  "Operator <";
 			if (e3 < 90) {
 				cout << endl << "Event 3 is shorter than 90 minutes.";
 			}
@@ -109,7 +118,9 @@ int main() {
 				cout << endl << "Event 3 is longer than 90 minutes.";
 			}
 
+			cout << endl;
 			////calling the == operator
+			cout << endl<< "Operator ==";
 			if (e1 == e2) { //not equal
 				cout << endl << "They are equal.";
 			}
@@ -117,7 +128,26 @@ int main() {
 				cout << endl << "They are not equal.";
 			}
 
-			cin >> e2;
+			while (true) {
+				cout << endl;
+				cout << endl << "Do you want to add an event? 1. Yes  2. No" << endl << "Press 2 to exit this option.";
+				cout << endl << "Your option: ";
+				int eventOption;
+				cin >> eventOption;
+
+				if (eventOption == 1) {
+					cin >> e2;
+					cout << e2;
+				}
+				else 
+					if (eventOption == 2) {
+						break;
+					}
+					else {
+						cout << endl << "Invalid option. Press 1 or 2" << endl;;
+					}
+			 }
+			
 
 			cout << endl;
 			cout << endl << "Testing the inheritance of a new class.";
@@ -181,8 +211,8 @@ int main() {
 			cout << l2;
 
 			Location l3("Parcul Tei", "Alexandru Popescu", 20, places, 40);
-			cout << l3;
 			cin >> l3;
+			cout << l3;
 
 			Location l4("Arena Nationala", "Maria Comanescu", NORMAL);
 			cout << l4;
@@ -200,23 +230,25 @@ int main() {
 			cout << l6;
 
 			////operator+ inside the class
-			cout << endl;
+			cout << endl << "Operator + inside the class" << endl;
 			cout << endl << l2.getNoRows(); //10
 			cout << endl << l3.getNoRows(); //20
 			l2 = l3 + 4; //l2 = 20 + 4 = 24
 			cout << endl << l2.getNoRows(); //24
 			cout << endl << l3.getNoRows(); //20
+			cout << endl;
 
 			//operator++ inside the class POST
-			cout << endl;
+			cout << endl << "Operator ++ inside the class" << endl;
 			cout << endl << l2.getNoRows(); //24
 			cout << endl << l3.getNoRows(); //20
 			l3 = l2++; //first l3 takes the value of l2, then l2 increases by 1
 			cout << endl << l2.getNoRows(); //25
 			cout << endl << l3.getNoRows(); //24 - gives 20;
+			cout << endl;
 
 			//operator- outside the class
-			cout << endl;
+			cout << endl << "Operator - outside the class" << endl;
 			cout << endl << l7.getNoRows(); //50
 			cout << endl << l8.getNoRows(); //80
 			l8 = 3 + l7;
@@ -231,7 +263,9 @@ int main() {
 			//cout << endl << l2.getNoRows(); //20
 			//cout << endl << l7.getNoRows(); //50
 
+			cout << endl;
 			//////calling the index operator
+			cout << "Index operator";
 			try {
 				cout << endl << l1[2] << endl; // alexandru 012345678 //e
 			}
@@ -239,24 +273,30 @@ int main() {
 				cout << ex.what();
 			}
 
+			cout << endl;
 			////calling the ! operator
+			cout << "Operator !";
 			if (!l2) { //l2 has 10 rows
-				cout << "Location 2 has more than 15 rows";
+				cout << endl << "Location 2 has more than 15 rows";
 			}
 			else {
-				cout << "Location 2 does not have 15 or more rows. It has only 10.";
+				cout << endl<< "Location 2 does not have 15 or more rows. It has only 10.";
 			}
 
 			cout << endl;
-
+			cout << endl;
+			cout << "Operator !";
 			if (!l3) { //l3 has 20 rows
-				cout << "Location 3 has more than 15 rows. ";
+				cout << endl << "Location 3 has more than 15 rows. ";
 			}
 			else {
-				cout << "Location 2 does not have 15 or more rows. It has only 10.";
+				cout << endl << "Location 2 does not have 15 or more rows. It has only 10.";
 			}
 
+			cout << endl;
+			cout << endl;
 			////calling the == operator
+			cout << "Operator ==";
 			if (l2 == l3) { //not equal
 				cout << endl << "They are equal.";
 			}
@@ -264,7 +304,10 @@ int main() {
 				cout << endl << "They are not equal.";
 			}
 
+			cout << endl;
+			cout << endl;
 			////calling the > operator
+			cout << "Operator >";
 			if (l2 > 5) {
 				cout << endl << "Location 2 has more rows than just 5.";
 			}
@@ -272,6 +315,25 @@ int main() {
 				cout << endl << "Location 2 has less than 5 rows.";
 			}
 
+			while (true) {
+				cout << endl;
+				cout << endl << "Do you want to add a location? 1. Yes  2. No" << endl << "Press 2 to exit this option.";
+				cout << endl << "Your option: ";
+				int locationOption;
+				cin >> locationOption;
+
+				if (locationOption == 1) {
+					cin >> l3;
+					cout << l3;
+				} 
+				else
+					if (locationOption == 2) {
+						break;
+					}
+					else {
+						cout << endl << "Invalid option. Press 1 or 2" << endl;;
+					}
+			}
 
 			cout << endl << "Testing the inheritance of a new class.";
 			Location loc1("Herastrau", 200);
@@ -292,7 +354,7 @@ int main() {
 			}
 
 			GeographicPosition* position[1];
-			position[1] = &g1;
+			position[0] = &g1;
 			//position[2]=&g2;
 
 			cout << endl << "---------------Upcasting for Geographic Position";
@@ -336,17 +398,19 @@ int main() {
 
 			Ticket t5("Hamlet", "Held on Lipscani", 200, false);
 			t5.printInfo();
-			//
-			//
+			
+
 			//////operator+ inside the class 
+			cout << endl << "Operator + inside the class" << endl;
 			cout << endl << t3.getPrice(); //100
 			cout << endl << t2.getPrice(); //100
 			t3 = t2 + 60; // t3=160
 			cout << endl << t3.getPrice(); //160
 			cout << endl << t2.getPrice(); //100
-
 			cout << endl;
+
 			////operator+ outside the class
+			cout << endl << "Operator + outside the class" << endl;
 			cout << endl << t3.getPrice(); //100
 			cout << endl << t2.getPrice(); //100
 			t3 = 60 + t2; // t3=160
@@ -354,7 +418,8 @@ int main() {
 			cout << endl << t2.getPrice(); //100
 			cout << endl;
 
-			//////operator ++ inside the class POST INCREMENTATION - error (fixed it somehow?)
+			//////operator ++ inside the class POST INCREMENTATION
+			cout << endl << "Operator ++ inside the class" << endl;
 			cout << endl << t2.getPrice(); //100
 			cout << endl << t3.getPrice(); //160
 			t2 = t3++; //t2 takes the price of t3, then t3 increments by 1
@@ -364,6 +429,7 @@ int main() {
 
 
 			//////operator ++ outside the class PRE INCREMENTATION
+			cout << endl << "Operator + outside the class" << endl;
 			cout << endl << t2.getPrice(); //160
 			cout << endl << t3.getPrice(); //161
 			t3 = ++t2; //increment t2 by 1, then give this price to t3
@@ -372,22 +438,29 @@ int main() {
 			cout << endl;
 
 
-			////
+			cout << endl;
+			cout << endl;
 			//////calling the index operator
+			cout << "Index operator";
 			try {
 				cout << endl << t2[2] << endl; //nutcracker 0123456789
 			}
 			catch (exception ex) {
 				cout << ex.what();
 			}
+			
 			cout << endl;
-
+			cout << endl;
 			//////calling the negation operator
-			cout << t2.getIsVIP();
+			cout << "Operator !";
+			cout << endl<< t2.getIsVIP();
 			cout << endl;
 			cout << !t2;
 
+			cout << endl;
+			cout << endl;
 			//calling the > operator
+			cout << "Operator >";
 			if (t2 > 50) {
 				cout << endl << "Ticket 2 costs more than 50 lei.";
 			}
@@ -395,12 +468,35 @@ int main() {
 				cout << endl << "Ticket 2 costs less than 50 lei";
 			}
 
+			cout << endl;
+			cout << endl;
 			//////calling the == operator
+			cout << "Operator ==";
 			if (t2 == t5) { //not equal
 				cout << endl << "They are equal.";
 			}
 			else {
 				cout << endl << "They are not equal.";
+			}
+
+			while (true) {
+				cout << endl;
+				cout << endl << "Do you want to add a ticket? 1. Yes  2. No" << endl << "Press 2 to exit this option.";
+				cout << endl << "Your option: ";
+				int ticketOption;
+				cin >> ticketOption;
+
+				if (ticketOption == 1) {
+					cin >> t1;
+					cout << t1;
+				}
+				else
+					if (ticketOption == 2) {
+						break;
+					}
+					else {
+						cout << endl << "Invalid option. Press 1 or 2" << endl;;
+					}
 			}
 
 			cout << endl;
