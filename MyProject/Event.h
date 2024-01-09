@@ -262,7 +262,7 @@ public:
 	//generic method 
 	void printNoSeats() const {
 		if (this->seats == nullptr) {
-			cout << endl << "No seats.";
+			cout << endl << "No numbering of seats available.";
 		}
 		else {
 			cout << endl << "Available seats: ";
@@ -281,12 +281,6 @@ public:
 			throw exception("Index out of range.");
 		}
 	}
-
-	
-	//cast operator - explicit form 
-	/*explicit operator int() {
-		return this->duration;
-	}*/
 
 
 	//the negation operator !
@@ -340,22 +334,26 @@ ostream& operator<<(ostream& console, const Event& event) {
 	console << endl << "Event " << event.nameEvent << " will last for " <<
 		event.duration << " minutes.";
 	console << endl << "The tickets are sold out. " << event.isSoldOut;
-	cout << endl << "There are " << event.noSeats << " available.";
+	cout << endl << "There are " << event.noSeats << " seats available.";
 	event.printNoSeats();
 	return console;
 }
 
 istream& operator>>(istream& in, Event& event) {
-	cout << endl << "The name of the event is: ";
+	cout << endl << "The name of the event is (no spaces, at least 2 characters): ";
 	string buffer;
 	in >> buffer;
 	event.setNameEvent(buffer.c_str());
 
-	cout << "The duration in minutes of the event is: ";
-	in >> event.duration;
+	cout << "The duration in minutes of the event is (must be over 5): ";
+	int duration;
+	in >> duration;
+	event.setDuration(duration);
 
-	cout << "The number of available seats is: ";
-	in >> event.noSeats;
+	cout << "The number of available seats is (more than 1): ";
+	int noSeats;
+	in >> noSeats;
+	event.setNoOfSeats(noSeats);
 
 	return in;
 
