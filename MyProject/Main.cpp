@@ -468,6 +468,7 @@ int main() {
 				cout << endl << "Ticket 2 costs less than 50 lei";
 			}
 
+
 			cout << endl;
 			cout << endl;
 			//////calling the == operator
