@@ -31,6 +31,7 @@ public:
 	Location(string locationName, int totalNoOfSeats) {
 		this->locationName = locationName;
 		this->totalNoOfSeats=totalNoOfSeats;
+
 	}
 
 	//2 constructors with parameters
@@ -165,8 +166,8 @@ public:
 	}
 
 	void setNoRows(int rows) {
-		if (rows < 1 && rows> 20) {
-			cout << endl << "There are only 20 rows available.";
+		if (rows < 1 && rows > 20) {
+			throw exception("Invalid input regarding the number of rows.");
 		}
 		else {
 			this->noRows = rows;
@@ -353,23 +354,31 @@ istream& operator>>(istream& in, Location& loc) {
 	//in.clear();
 	//loc.setLocationOwner(buffer);
 
-	cout << endl << "The name of the owner is: ";
+	cout << endl << "The name of the owner is (no spaces, at least 2 characters): ";
 	string buffer;
 	in >> buffer;
 	loc.setLocationOwner(buffer.c_str());
 		
-	cout << endl << "The name of this location is: ";
-	in >> loc.locationName;
+	cout << endl << "The name of this location is (no spaces, at least 2 characters): ";
+	string locationName;
+	in >> locationName;
+	loc.setLocationName(locationName);
+
 	cout << endl << "The number of rows available is: ";
-	in >> loc.noRows;
-	cout << endl<< "The number of available seats per each row is: ";
-	in >> loc.seatsPerRow;
+	int rows;
+	in >> rows;
+	loc.setNoRows(rows);
+
+	cout << endl<< "The number of available seats per each row is (between 1 and 40): ";
+	int seatsPerRow;
+	in >> seatsPerRow;
+	loc.setSeatsPerRow(seatsPerRow);
 	
 	return in;
 
 }
 
-//inheritance  
+//composition
 class Address:public Location {
 	string street =" ";
 	int streetNumber=0;
@@ -400,11 +409,12 @@ public:
 	}
 };
 
+//inheritance
 enum Continent {EUROPA, NORTH_AMERICA, SOUTH_AMERICA, AUSTRALIA, ASIA, ANTARCTICA, AFRICA};
 
 class GeographicPosition : public Location {
-	string city;
-	string country;
+	string city=" ";
+	string country=" ";
 	Continent continent;
 
 public:
