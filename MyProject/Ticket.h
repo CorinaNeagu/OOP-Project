@@ -241,7 +241,7 @@ Ticket operator+(int value, const Ticket& t) {
 ostream& operator<<(ostream& console, const Ticket& ticket) {
 	console << endl << "----------------------------";
 	console << endl << "The ticket for " << ticket.nameShow << " costs " << ticket.price << ".";
-	console << endl << "Some information about this show (has to be at least 5 characters, otherwise it will throw an exception): " << ticket.text;
+	console << endl << "Some information about this show (has to be at least 5 characters without spaces): " << ticket.text;
 	console << endl << "The number of this ticket is: " << ticket.idTicket;
 	console << endl << "This ticket is a VIP one: " << ticket.isVIP;
 	return console;
@@ -249,20 +249,22 @@ ostream& operator<<(ostream& console, const Ticket& ticket) {
 
 //>> operator
 istream& operator>>(istream& in, Ticket& ticket) {
-	cout << endl << "This ticket is for: ";
+	cout << endl << "This ticket is for (no spaces, at least 2 characters): ";
 	string buffer;
 	in >> buffer;
 	ticket.setNameShow(buffer.c_str());
 
-	cout << "The price of this ticket is: ";
-	in >> ticket.price;
+	cout << "The price of this ticket is (must be over 50, otherwise it will throw an exception): ";
+	int price;
+	in >> price;
+	ticket.setPrice(price);
 
-	cout << "Some information about this event(has to be at least 5 characters): ";
+	cout << "Some information about this event(has to be at least 5 characters with no spaces): ";
 	string bufferText;
 	in >> bufferText;
 	ticket.setText(bufferText);
 
-	cout << "Is this a VIP ticket? ";
+	cout << "Is this a VIP ticket? (1 - yes, 0 - no): ";
 	in >> ticket.isVIP;
 
 	return in;
